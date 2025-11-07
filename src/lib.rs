@@ -522,4 +522,22 @@ mod composable_tests {
             "T(Dummy)\n\nCaused by:\n    0: fourth\n    1: third\n    2: second\n    3: first\n",
         );
     }
+
+    #[test]
+    fn result_is_not_conflict() {
+        use crate::Context;
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum DummyErrorInner {
+            #[error("dummy err msg")]
+            Dummy,
+        }
+
+        impl_context!(DummyError(DummyErrorInner));
+
+        #[allow(dead_code)]
+        type Result = core::result::Result<(), DummyError>;
+
+        // note: no actual code to succeed -- compilation is success
+    }
 }
